@@ -1,4 +1,5 @@
 # Node.js
+target/
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -14,9 +15,7 @@ yarn.lock
 /public
 
 # Rust
-/target/
 Cargo.lock
-Cargo.toml
 **/*.rs.bk
 **/*.rs.orig
 **/*.rlib
