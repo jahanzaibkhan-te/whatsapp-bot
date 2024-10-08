@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Request Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Session Management</h1>
+    <input type="number" id="deviceID" value="1" style="width: 50px;" >
+    <button id="postDataBtn">Get QR Code</button>
+    <div id="responseContainer">
+        <h3>Response:</h3>
+        <p id="responseMessage"></p>
+        <img id="qrCodeImage" src="" alt="QR Code" style="display:none;"/>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#postDataBtn').on('click', function() {
+                $("#qrCodeImage").hide();
+                var requestData = {
+                    "id": "device_" + $("#deviceID").val(),
+                    "isLegacy": "false"
+                };
+
+                // Perform the POST request using jQuery
+                $.ajax({
+                    url: "/sessions/add",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(requestData),
+                    success: function(response) {
+                        // Handle the response
+                        if (response.success) {
+                            $('#responseMessage').text(response.message);
+                            if (response.data && response.data.qr) {
+                                $('#qrCodeImage').attr('src', response.data.qr).show();
+                            }
+                        } else {
+                            $('#responseMessage').text("Failed to get QR code.");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle any errors that occur during the request
+                        $('#responseMessage').text("An error occurred: " + error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

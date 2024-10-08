@@ -1,0 +1,20 @@
+
+services:
+  rust-app:
+    build:
+      context: ./rust-app
+      dockerfile: Dockerfile
+    container_name: wa-rust-app
+    ports:
+      - "8080:8080"
+  #   depends_on:
+  #     - nodejs-app
+  # nodejs-app:
+  #   build:
+  #     context: ./nodejs-app
+  #     dockerfile: Dockerfile
+  #   container_name: wa-nodejs-app
+  #   ports:
+  #     - "3000:3000"
+
+

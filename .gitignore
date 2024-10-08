@@ -1,0 +1,49 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+.env
+.DS_Store
+/dist
+/build
+/coverage
+/.next
+/typings
+/public
+
+# Rust
+/target/
+Cargo.lock
+Cargo.toml
+**/*.rs.bk
+**/*.rs.orig
+**/*.rlib
+**/*.d
+**/*.pdb
+**/*.exe
+**/*.o
+**/*.so
+**/*.a
+**/*.dll
+**/*.dSYM
+
+# IDE and Editor Specific
+.vscode/
+.idea/
+*.swp
+*.swo
+*.lock
+*.iml
+
+# Operating System Specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.DS_Store
+
+# Other Files
+*.log
+*.tgz
+*.tar.gz
