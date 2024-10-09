@@ -1,4 +1,7 @@
+
 [default]
+address = "127.0.0.1"
+port = 8001
 limits.data-form = "2MiB"
 template_dir = "templates/"
 

@@ -1,14 +1,20 @@
-import "dotenv/config";
+import dotenv from "dotenv";
 import express from "express";
 import nodeCleanup from "node-cleanup";
 import routes from "./routes.js";
 import { init, cleanup } from "./whatsapp.js";
 import cors from "cors";
 
+dotenv.config();
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: envFile });
+
 const app = express();
 
 const host = process.env.WA_SERVER_HOST || undefined;
 const port = process.env.WA_SERVER_PORT || 8000;
+
+console.log(process.env.MAX_RETRIES);
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));

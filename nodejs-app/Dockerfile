@@ -8,13 +8,11 @@ WORKDIR /
 COPY package*.json ./
 
 # Install Node.js dependencies
-RUN npm install
+RUN npm install -f
 
 # Copy the rest of the source files
 COPY . .
 
-# Expose the port your Node.js app runs on
-EXPOSE 3000
-
-# Run the application
-CMD [ "node", "index.js" ]
+# Run the application in production
+ENV NODE_ENV=production
+CMD [ "node", "app.js" ]
