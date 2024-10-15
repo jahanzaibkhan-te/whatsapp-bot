@@ -1,21 +1,21 @@
 
 services:
-  rust-app:
-    build:
-      context: ./rust-app
-      dockerfile: Dockerfile
-    container_name: wa-rust-app-con
-    ports:
-      - "8080:8000"
-    depends_on:
-      - nodejs-app
   nodejs-app:
     build:
       context: ./nodejs-app
       dockerfile: Dockerfile
     container_name: wa-nodejs-app-con
     ports:
-      - "3000:3000"
+      - "8081:8081"
+  rust-app:
+    build:
+      context: ./rust-app
+      dockerfile: Dockerfile
+    container_name: wa-rust-app-con
+    ports:
+      - "8082:8082"
+    depends_on:
+      - nodejs-app
 
 
 

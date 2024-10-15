@@ -2,147 +2,107 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>Rocket Form Example</title>
-    <link rel="stylesheet" href="/chota.min.css">
-    <style>
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px 10px;
-      }
 
-      h1 {
-          margin: 10px 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Form Example</h1>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Whatsapp Rust Chatbot</title>
+  <link rel="stylesheet" href="/chota.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <style>
+    .container {
+      margin: 0 auto;
+      padding: 20px 10px;
+    }
 
-      {% if errors | length > 0 %}
-          <div class="row">
-            <div class="col">
-              <small class="text-error">
-                error: {{ errors | length }} field{{ errors | length | pluralize }}
-                failed to validate
-              </small>
-            </div>
-          </div>
-      {% endif %}
+    h1 {
+      margin: 10px 0;
+    }
+  </style>
+</head>
 
-      <form action="/" method="post" enctype="multipart/form-data">
-        <fieldset>
-          <legend>About You</legend>
-          <div class="row">
-            <div class="col">
-                {{ m::input(label="Name", type="text", name="account.name") }}
-                <!-- required -->
-            </div>
-            <div class="col">
-            {{ m::input(label="Email Address", type="text", name="account.email") }}
-              <!-- required pattern=".*@.*"/> -->
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              {{ m::input(label="Password", type="password", name="account.password.first") }}
-              <!--   required minlength="6" value="" /> -->
-            </div>
-
-            <div class="col">
-
-            {{
-                m::input(label="Confirm Password",
-                type="password",
-                name="account.password.second")
-            }}
-
-              <!--   required minlength="6" value="" /> -->
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Metadata</legend>
-
-          <div class="row">
-            <div class="col">
-            {{ m::input(label="Title", type="text", name="submission.title") }}
-              <!-- required -->
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-            {{ m::input(label="Publish Date", type="date", name="submission.date") }}
-              <!-- <input type="date" name="submission.date" id="date" value="2020&#45;12&#45;26"> -->
-            </div>
-
-            <div class="col">
-            {{
-                m::select(
-                    label="Rights Assignment",
-                    name="submission.rights",
-                    options=["Public", "Reserved", "Exclusive"]
-                )
-            }}
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <label>Applicable Categories</label>
-              <br />
-              {{ m::checkbox(name="submission.category", label="Biology", value="Biology") }}
-              <br />
-              {{ m::checkbox(name="submission.category", label="Chemistry", value="Chemistry") }}
-              <br />
-              {{ m::checkbox(name="submission.category", label="Physics", value="Physics") }}
-              <br />
-              {{ m::checkbox(name="submission.category", label="CS", value="CS") }}
-            </div>
-          </div>
-
-        </fieldset>
-
-        <fieldset>
-          <legend>Contents</legend>
-
-            {{
-                m::textarea(
-                    label="Abstract",
-                    name="submission.abstract",
-                    placeholder="Your abstract, max 250 characters...",
-                    max=250
-                )
-            }}
-
-          {{
-              m::input(
-                  label="File to Upload (PDF, max 1MiB)",
-                  type="file",
-                  name="submission.file"
-              )
-          }}
-
-          <!-- <input type="file" name="submission.file" id="file" required accept=".pdf"> -->
-
-          <div class="row">
-            <div class="col">
-                {{ m::checkbox(name="submission.ready", label="Submission is ready for review.") }}
-            </div>
-          </div>
-
-        </fieldset>
-
-        <br />
-        <input type="submit" value="Submit" class="is-full-width" />
-      </form>
+<body>
+  <div class="container">
+    <div class="d-flex justify-content-between">
+      <h1> Home Page </h1>
+      <h2> <a href="/chats/list">Message List</a></h2>
     </div>
-  </body>
+
+    <div class="row">
+      <div class="col-md-12 text-end">
+        <button class="btn btn-primary" id="btnAddDevicePopUp">Add Device </button>
+      </div>
+      <div class="col-md-12">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Sr</th>
+              <th>Device</th>
+              <th>Name</th>
+              <th>Number</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyDevices">
+              
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addDeviceModalLabel">Add Device</h5>
+          <button type="button" class="btn close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function () {
+      $.ajax({
+        url: "/api/devices/list",
+        success: function (data) {
+          $.each(data, function (i, v) {
+            AddDeviceToTbody(v);
+          })
+        }
+      })
+    })
+
+    function AddDeviceToTbody(d){
+      $("#tbodyDevices").append(`
+        <tr>
+          <td>${d.id}</td>
+          <td>${d.device_id}</td>
+          <td>${d.name}</td>
+          <td>${d.number}</td>
+          <td><span id="status"></span></td>
+        </tr>`)
+    }
+
+    $("#btnAddDevicePopUp").click(function () {
+      $("#addDeviceModal").modal('show');
+    })
+
+  </script>
+</body>
+
 </html>

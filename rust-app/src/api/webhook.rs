@@ -1,38 +1,8 @@
+
 use rocket::serde::{json::Json, Deserialize, Serialize};
-
-//use crate::tblmessages;
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-#[allow(non_snake_case)]
-struct MessageID {
-    remoteJid: String,
-    fromMe: bool,
-    id: String,
-    participant: Option<String>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-#[allow(non_snake_case)]
-struct Message {
-    conversation: Option<String>,
-    extendedTextMessage: Option<ExtendedTextMessage>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-struct ExtendedTextMessage {
-    title: Option<String>,
-    description: Option<String>,
-    text: Option<String>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-#[allow(non_snake_case)]
-pub struct WaMessage {
-    deviceId: String,
-    from: String,
-    message_id: MessageID,
-    message: Message,
-}
+use crate::data::wamessage::WaMessage;
+use crate::repo::tblmessages;
+use crate::db::Db;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Response {
@@ -49,11 +19,12 @@ pub struct RespMsg {
 }
 
 #[post("/api/send-webhook", data = "<message>")]
-pub fn submit(message: Json<WaMessage>) -> Json<Option<Response>> {
-
-    if let Some(conversation) = message.message.conversation.as_ref()
-    .or_else(|| {
-        message.message.extendedTextMessage
+pub async fn submit(db: Db, message: Json<WaMessage>) -> Json<Option<Response>> {
+    let _ = tblmessages::create(&db, tblmessages::TblMessages::from(&message)).await;
+    if let Some(conversation) = message.message.conversation.as_ref().or_else(|| {
+        message
+            .message
+            .extendedTextMessage
             .as_ref()
             .and_then(|ext| ext.title.as_ref())
     }) {
@@ -81,9 +52,12 @@ pub fn submit(message: Json<WaMessage>) -> Json<Option<Response>> {
             } else if conversation.contains("evening") {
                 "Good evening! How can I assist you tonight?"
             } else {
-                "I'm sorry, I didn't understand that. I can only understand greetings yet."
+                ""
+                //"I'm sorry, I didn't understand that. I can only understand greetings yet."
             };
-
+            if reply_text == "" {
+                return Json(None);
+            }
             return Json(Some(Response {
                 session_id: message.deviceId.clone(),
                 message: RespMsg {
@@ -97,6 +71,7 @@ pub fn submit(message: Json<WaMessage>) -> Json<Option<Response>> {
     }
     Json(None)
 }
+
 
 // {
 //     "text": "Hello, world!",

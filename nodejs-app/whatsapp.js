@@ -121,7 +121,7 @@ const createSession = async (id, islegacy = false, _resp = null) => {
         }
       }
     } catch (err) {
-      console.log("Upsert Error => ", err);
+      //console.log("Upsert Error => ", err);
     }
   }),
     sock.ev.on("connection.update", async (con_update_resp) => {
@@ -169,7 +169,7 @@ const createSession = async (id, islegacy = false, _resp = null) => {
         try {
           await sock.logout();
         } catch (error) {
-          console.error("Error during logout:", error);
+          //console.error("Error during logout:", error);
         } finally {
           deleteSession(id, islegacy);
         }
@@ -278,13 +278,13 @@ const getSession = (_0x4b5e13) => {
     try {
       await delay(parseInt(delayTime));
       if (!session || !session.sendMessage) {
-        console.error("sendMessage - Invalid session object:", session);
+        //console.error("sendMessage - Invalid session object:", session);
         return Promise.resolve(null);
       }
       const result = await session.sendMessage(recipient, message);
       return result;
     } catch (error) {
-      console.error("sendMessage - Error:", error);
+      //console.error("sendMessage - Error:", error);
       return Promise.resolve(null);
     }
   },
