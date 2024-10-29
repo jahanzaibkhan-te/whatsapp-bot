@@ -37,6 +37,15 @@ pub async fn create(db: &Db, post_value: TblDevices) -> JzResult<Option<i32>> {
     Ok(id)
 }
 
+pub  async fn delete(db: &Db, id: i32) -> JzResult<Option<()>> {
+    let affected = db.run(move |conn| {
+        diesel::delete(tbl_devices::table)
+            .filter(tbl_devices::id.eq(id))
+            .execute(conn)
+    }).await?;
+    Ok((affected == 1).then(|| ()))
+}
+
 pub async fn list(db:  &Db) -> JzResult<Vec<TblDevices>> {
     let devices = db
         .run(move |conn| {

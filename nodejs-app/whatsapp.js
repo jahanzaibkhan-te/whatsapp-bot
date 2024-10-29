@@ -197,7 +197,7 @@ const getSession = (_0x4b5e13) => {
   },
   setDeviceStatus = (deviceId, status) => {
     var apiUrl =
-      process.env.APP_URL + "/api/set-device-status/" + deviceId + "/" + status;
+      process.env.APP_URL + process.env.SET_STATUS_URL + deviceId + "/" + status;
     try {
       axios
         .post(apiUrl)
@@ -208,7 +208,7 @@ const getSession = (_0x4b5e13) => {
     } catch {}
   },
   sentWebHook = (deviceId, messageData) => {
-    const apiUrl = process.env.APP_URL + `/api/send-webhook`;
+    const apiUrl = process.env.APP_URL + process.env.SEND_WEBHOOK_URL;
     const d = {
       deviceId: deviceId,
       from: messageData.remote_id.split("@")[0],
